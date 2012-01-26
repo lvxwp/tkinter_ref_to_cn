@@ -1,0 +1,261 @@
+\documentclass[11pt,a4paper,oneside]{book}
+\usepackage{xeCJK}
+\usepackage{CJK}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{graphics}
+\usepackage{color}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{xcolor}
+%\renewcommand{\chaptername}{第\thechapter章}
+\renewcommand\contentsname{\textbf{目录}} 
+\geometry{left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm}
+\setCJKmainfont{SimSun}
+\setmainfont{Times New Roman}
+\setsansfont{Arial}
+\title{\huge \textbf{\textsf{Tkinter 8.4 参考：一个Python的图形接口}}}
+\author{原文作者：\textsf{Joh W.Shipman}\\译者：\href{mailto:william0victor@gmail.com}{\textsf{william0victor@gmail.com}}}
+\date{原文发布时间：\textsf{2010-12-12 14:13}}
+\linespread{1}
+\begin{document}%文档开始
+ \addcontentsline{toc}{chapter}{摘要}
+%\pagenumbering{roman}
+\maketitle%显示标题、作者、时间等信息
+\chapter*{\Large{摘要}}
+描述Tkiner微组件在python编程语言中构造用户图形界面本参考手册已有\href{http://www.nmt.edu/tcc/help/pubs/tkinter/}{在线格式\footnotemark[1]}并导出为\href{http://www.nmt.edu/tcc/help/pubs/tkinter/tkinter.pdf}{PDF文档\footnotemark[2]}。有任何意见请发送到\href{mailto:tcc-doc@nmt.edu}{tcc-doc@nmt.edu}。
+\footnotetext[1]{http://www.nmt.edu/tcc/help/pubs/tkinter/}
+\footnotetext[2]{http://www.nmt.edu/tcc/help/pubs/tkinter/tkinter.pdf}
+\begin{tableofcontents}%目录
+%\dotfill
+%\dottedtocline{1}
+
+\end{tableofcontents}%endcontents
+\chapter[什么是Tkinter？]{什么是Tkinter？}%第一章
+Tkinter是Python的一个GUI（用户图形界面）微组件。本文档只涵盖常用特性。
+本文档适用于Python 2.5以及Tkinter 8.4，运行在基于Linux系统的X Window系统中。你使用的版本或许稍有不同。
+相关参考：
+\begin{itemize}
+\item Fredrik Lundh, who wrote Tkinter, has two versions of his \textit{An Introduction to Tkinter}: \href{http://www.pythonware.com/library/tkinter/introduction/}{a more complete 1999 version}\footnotemark[3] and \href{http://effbot.org/tkinterbook/}{a 2005 version}\footnotemark[4] that presents a few newer features. 
+
+\item \textit{ Python and Tkinter Programming} by John Grayson (Manning, 2000, ISBN 1-884777-81-3) is out of print, but has many useful examples and also discusses an extension package called \href{http://pmw.sourceforge.net/}{\textit{Pmw}: Python megawidgets}\footnotemark[5]. 
+
+\item \href{http://www.nmt.edu/tcc/help/pubs/python/web/}{\textit{Python 2.5 quick reference}}\footnotemark[6]: general information about the Python language. 
+
+\item For an example of a sizeable working application (around 1000 lines of code), see huey: \href{http://www.nmt.edu/tcc/help/lang/python/examples/huey/}{\textit{A color and font selection tool7}}\footnotemark[7]. 
+\end{itemize}
+我们将由从Tkingter的可见部分开始看起：创建微件，并将他们布置到屏幕上。稍后我们将讨论怎样连接程序前端面板到后端逻辑。
+\footnotetext[3]{http://www.pythonware.com/library/tkinter/introduction/}
+\footnotetext[4]{http://effbot.org/tkinterbook/}
+\footnotetext[5]{http://pmw.sourceforge.net/}
+\footnotetext[6]{http://www.nmt.edu/tcc/help/pubs/python/web/}
+\footnotetext[7]{http://www.nmt.edu/tcc/help/lang/python/examples/huey/}
+\pagenumbering{arabic}
+\chapter[一个小程序]{一个小程序}%第二章
+下面是一个只包含一个退出按钮的Tkinter小程序：
+\lstset{numbers=left, 
+numberstyle=\tiny,
+keywordstyle=\color{red!80}, 
+frame=single,
+basicstyle=\sffamily,
+breaklines,
+backgroundcolor=\color{red!60!green!60!blue!60},
+commentstyle=\color{red!40!green!40!blue!40}, 
+rulesepcolor=\color{red!20!green!20!blue!20}%,
+%morekeywords={self,return}
+}
+\begin{lstlisting}[language=python]
+#!/usr/local/bin/python                      1
+from Tkinter import * 			     2
+class Application(Frame): 			
+	def __init__(self, master=None):     3
+		Frame.__init__(self, master) 4
+		self.grid() 		     5	
+		self.createWidgets() 
+	def createWidgets(self): 
+			self.quitButton = Button ( self, text='Quit', command=self.quit ) 6	
+			self.quitButton.grid()  7
+app = Application() 			8			
+app.master.title("Sample application") 	9
+app.mainloop()                         10
+\end{lstlisting}
+\begin{enumerate}
+\item 假如你的系统有Python解释器，路径为/usr/local/bin/python，本行将使脚本自动运行。【译者注：由于不同的linux稍有差异，Python解释器的安装路径可能有差异，建议该行写为\#!/usr/bin/env python】
+\item 本行导入Tkinter所有包到你程序的命名空间。
+\item 你的程序的类必须从Tkinter的Frame类继承。
+\item 调用Frame父类构造函数。
+\item 需要让程序真正显示在屏幕上。
+\item 创建一个标记为“Quit”的按钮。
+\item 将按钮放置在程序中。
+\item 实例化Application类来运行主程序。
+\item 调用本方法设置窗口的抬头为“Sample application”。
+\item 开始程序主回路，等待鼠标和键盘事件。
+\end{enumerate}
+\chapter[定义]{定义}%第三章
+在我们继续前，先让我们来解释一些常用的项目。
+\subsection*{\textbf{window}}
+\subsubsection*{本项在不同的环境中有不同的意义，但是通常来说它指的是在你屏幕上的某个矩形区域。}
+\subsection*{\textbf{Top-level window}}
+\subsubsection*{一个独立存在于你的屏幕上的窗口。它将由你的系统桌面管理器装饰上标准的框架和控制器。你能在桌面上四处移动它。通常你也可以调节它的尺寸，尽管你的程序可以阻止。}
+\subsection*{\textbf{widget}}
+\subsubsection*{这些项目像积木一样构建程序的图形界面。widget的例子：按钮，单选框，文本域，框架，以及文本标签。}
+\subsection*{\textbf{frame}}
+\subsubsection*{在Tkinter中，Frame微件是构建复杂布局的基本单元。一个框架是能包含其它微件的矩形区域。}
+\subsection*{\textbf{Child,parent}}
+\subsubsection*{当一个微件被创建，一个父类-子类的关系也被创建。例如，如果你放置一个文本标签到一个框架中，那么这个框架就是文本标签的父类。}
+\chapter[布局管理]{布局管理}%第四章
+稍候我们将讨论微件——你的图形界面的积木。怎样在窗口中方置微件。
+尽管在Tkinter中有三种不同的“布局管理器”，作者强烈推荐\textsf{.grid()}布局管理器来美化所有东西。这个管理器将每个窗口或者框架当作一个表——行和列的网格管理。
+单元格是一行和一列的交叉区域。
+每行的宽就是在行中微件单元格的宽。
+每列的高就是列中最大单元格的高。
+由于微件没有完全填满单元格，你可以在多出来的空间里做些什么。你既可以将多余的空间移出到微件外，也可以调整微件来填满它，水平或垂直方向都可以。
+你可以将多个单元格融合为一个更大的区域，一个称为纺丝的过程。
+当你创建了一个微件，直到你在布局管理器中注册了它，否则它不会显示。因此，构建和放置一个微件是两个步骤，步骤如下：
+\begin{lstlisting}[language=python]
+self.thing = Constructor(parent, ...) 
+self.thing.grid(...) 
+\end{lstlisting}
+\textit{\textsf{Contructor}}是指微件的类型如\sf{Button}，\sf{Frame}，以及其他，\sf{parent}是指将会构建子类微件的父类微件。所有的微件都有一个\sf{.grid()}方法，你可以用来告诉布局管理器把微件放哪。
+\section[.grid()方法]{\sf{.grid()方法}}%4.1
+把微件w显示在你的程序窗口上：
+\begin{lstlisting}[language=python]
+w.grid(option=value,...)
+\end{lstlisting}
+\par{这个方法用网格布局管理器注册了一个微件w——如果你不这么做，那么这个微件将存在于内部，但是在屏幕上它将不可见。}
+
+下面是.grid()布局管理器方法的选项：
+\begin{longtable}{|l|p{0.85\textwidth}|}
+
+\hline
+\textsf
+column &
+你想将微件放置的行数，从0开始计算。默认值是0。\\ \hline
+columnspan & 
+通常一个微件只占据网格中的一个单元格。然而，你可以选取列中多个单元格，并在columnspan选项中设置单元格的数量来整合他们到一个大单元格。例如，\textit{w}.grid(row=0,column=2,columnspan=3)，例中将会把\textit{w}微件放置在一个横跨0列2，3，4行的一个单元格中。\\ \hline
+in\_ &
+注册微件w作为某个微件如\textit{w$_2$}的子类，用法in\_=\textit{w$_2$}。当w微件被创建时，新的\textit{w$_2$}微件必须作为parent微件的子类来使用。\\ \hline
+ipadx &
+内部x padding。这个维度是增加微件内部左边和右边。\\ \hline
+ipady &
+内部y padding。这个维度是增加微件内部顶部和底部。\\ \hline
+padx &
+外部x padding。这个维度是增加微件外部左边和右边。\\ \hline
+pady &
+外部y padding。这个维度是增加微件上部和下部。\\ \hline
+row &
+你想把微件插入的列数，从0计数。默认是下一个更高的空闲列。\\ \hline
+rowspan &
+通常一个微件只占据网格的一个单元格。你可以选取一行内多个临近的单元格，但是，给选中的单元格设置rowspan选项。本选项和columnspan选项结合使用来抓取一块单元格。例子，\textit{w}.grid(row=3,column=2,rowspan=4,columnspan=5)例中将\textit{w}微件放入一个由3-6列2-6行组成的区域中。\\ \hline
+sticky &
+本项决定怎样分配单元格中的微件所占空间之外的空间。见下。\\ \hline
+\end{longtable}
+\begin{itemize}
+\sffamily
+\item 如果未设置sticky属性，默认会将微件在单元格中居中放置。
+
+\item 你可以使用sticky=NE（右上），SE（右下），SW（左下），或者NW（左上）来布局微件到单元格的四角。
+
+\item 你可以使用sticky=N（中上），E（中右），S（中下），或者W（中左）来布局微件到一边的相对中间。
+
+\item 使用sticky=N+S垂直扩展微件但让它水平居中。
+
+\item 使用sticky=E+W水平扩展微件但让它垂直居中。
+
+\item 使用sticky=N+E+S+W在水平和垂直方位来扩展微件填充单元格。
+
+\item 其它的组合也可使用。例如，sticky=N+S+W将垂直扩展微件并放置微件在相对东（左）边。
+\end{itemize}
+\section[其它grid管理方法]{其它grid管理方法}%4.2
+这些grid相关的方法在所有微件上都有定义：
+\subsection*{\textsf{\textit{w}.grid\_bbox ( column=None, row=None, col2=None, row2=None )}}
+\par{返回一个四元组描述微件w中一些或所有grid系统的边界框。前两个数字返回左上角区域的x和y坐标，后两个数字是宽和高。}
+\par{如果你传递行和列变量，返回的限定框描述所在行和列的单元格的区域。如果你也传递了col2和row2参数，返回的限定框描述包含从行column到col2，列row到row2的区域。}
+\par{例如，w.grid\_bbox(0,0,1,1)返回四个单元格的限定框，不是一个。}
+
+\subsection*{\textsf{\textit{w}.grid\_forget()}}
+\par{本方法使微件w从屏幕上消失。它还存在，只是不可见。你可以使用.grid()使它再次显示，但是它将不会记住它的grid选项。}
+
+\subsection*{\textsf{\textit{w}.grid\_info()}}
+\par{返回一个键为w微件选项名字的字典，以及这些选项相应的值。}
+
+\subsection*{\textsf{\textit{w}.grid\_location (x,y)}}
+\par{赋予关联的包含的微件一个坐标，本方法返回一个数组（col,row）描述w微件的网格系统的单元格包含的屏幕坐标。}
+
+\subsection*{\textsf{\textit{w}.grid\_propagate()}}
+\par{通常，所有微件传送他们的尺寸，意味着他们调节来适应内容。然而，有时你想约束一个微件到确定的尺寸，忽略它内容的尺寸，这样做，调用w.grid\_propagate(0)限制w微件的尺寸。}
+
+\subsection*{\textsf{\textit{w}.grid\_remove()}}
+\par{本方法类似.grid\_forget() ，但是它的grid选项会记住 ，所以如果你再.grid()它 ，它将会使用相同的grid配置选项。}
+
+\subsection*{\textsf{\textit{w}.grid\_size()}}
+\par{分别在w微件grid系统中返回一个包含行数和列数的二元组。}
+
+\subsection*{\textsf{\textit{w}.grid\_slaves ( row=None, column=None )}}
+\par{返回由微件w管理的微件的目录。如果没有提供参数，你将会获得所有被管理的微件的目录。使用row=参数只选择一列微件，或者使用column=参数只选择一行的微件。}
+
+\section[设置行和列的尺寸]{设置行和列的尺寸}
+\par{除非你采取确切的措施，网格列内的微件宽将会等于它的最大宽度，并且网格行内的微}件高将会是最高的单元格的高。微件上的sticky属性只控制它被放置的地方如果它没有完全填充单元格。
+
+\subsection*{\textsf{\textit{w}.columnconfigure ( N, option=value,...)}}
+\par{w微件的网格层中， 配置column N以便所给选项有所给的值。对于选项，请看下表。}
+
+\subsection*{\textsf{\textit{w}.rowconfigure ( N, option=value, … )}}
+\par{w微件的网格层中，配置row N以便所给的选项有所给的值。对于选项，请看下表。}
+\newline
+\newline
+以下是用来配置column和row尺寸的选项。\\
+\begin{tabular}{|l|p{0.85\textwidth}|}
+\hline
+minsize&
+以像素为最小单位，列和行的最小尺寸。\\ \hline
+pad&
+若干像素将会被加入所给的列或行，及以上的列或行中最大的单元格。\\ \hline
+weight&
+为了使一列或一行可拉伸，当重新分配额外的空间时，使用此选项并提供一个值，赋予该列或行相对权重。例如，如果一个微件w包含一个网格层，这些行将会分配3/4的额外空间到第一列及1/4到第二列：
+
+\begin{lstlisting}[language=python]
+w.columnconfigure(0, weight=3)
+w.columnconfigure(1, weight=1)
+\end{lstlisting}
+如果没有使用此项，列或行将不会伸展。\\ \hline
+\end{tabular}
+\section[是根窗口可重组]{是根窗口可重组}%4.3
+如果你想让用户调整你的全部程序窗口，并分配在其内部微件的额外空间吗？这需要一些不明显的操作。
+
+那就很有必要使用行和列大小管理技巧，4.3节所讲述的，“配置列和行大小”（p.7），来使你的程序微件的网格可伸展。然而，那仅仅是不够的。
+
+思考下第二节讨论的小程序，“一个小程序”（p.2），其只包含一个退出按钮。如果你运行此程序，并调整窗口大小，按钮保持同样的尺寸，居中于窗口。
+
+以下是小程序内.\_\_createWidgets()方法的替代版本。在这个版本中，退出按钮一直填充可利用空间。
+\begin{lstlisting}[language=python]
+def createWidgets(self):
+	top=self.winfo_toplevel()	1
+	top.rowconfigure(0,weight=1)	2   
+	top.columnconfigure(0,weight=1)	3
+	self.rowconfigure(0,weight=1)	4
+	self.columnconfigure(0,weight=1)	5
+	self.quit=Button (self, text=”Quit”, command=self.quit )
+	self.quit.grid( row=0, column=0, sticky=N+S+E+W)	6
+\end{lstlisting}
+\begin{enumerate}
+\item 顶层窗口是屏幕上最外层的窗口。然而，这个窗口不是你的程序的窗口——它是程序实例的父类。要获取顶层窗口，在程序中的任何微件上调用.winfo\_toplevel()方法。参看25节，“通用微件方法”（p.91）。
+\item 本行使顶层窗口的0行网格可伸展。 
+\item 本行使顶层窗口的0列网格可伸展。
+\item 使0行的程序微件的网格可伸展。
+\item 使0列的程序微件的网格可伸展
+\item 参数sticky=N+S+E+W使按钮扩张填满它的单元格
+\end{enumerate}
+还必须作出一个变化。在构造函数中，如下显示的改变第二行：
+\begin{lstlisting}[language=python]
+def __init__(self,master=None):
+	Frame.__init__(self,master)
+	self.grid(sticky=N+S+E+W)
+	self.createWidgets()
+\end{lstlisting}
+sticky=N+S+E+W参数对self.grid()是必要的，因此程序微件将会扩张填充它的顶层窗口网格的单元格。
+
+
+
+\end{document}% 文档结束
