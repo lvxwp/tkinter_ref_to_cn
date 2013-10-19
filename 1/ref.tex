@@ -66,19 +66,19 @@ rulesepcolor=\color{red!20!green!20!blue!20}%,
 %morekeywords={self,return}
 }
 \begin{lstlisting}[language=python]
-#!/usr/local/bin/python                      1
-from Tkinter import * 			     2
+#!/usr/local/bin/python                      
+from Tkinter import * 			     
 class Application(Frame): 			
-	def __init__(self, master=None):     3
-		Frame.__init__(self, master) 4
-		self.grid() 		     5	
+	def __init__(self, master=None):     
+		Frame.__init__(self, master) 
+		self.grid() 		     	
 		self.createWidgets() 
 	def createWidgets(self): 
-			self.quitButton = Button ( self, text='Quit', command=self.quit ) 6	
-			self.quitButton.grid()  7
+			self.quitButton = Button ( self, text='Quit', command=self.quit ) 	
+			self.quitButton.grid()  
 app = Application() 			8			
-app.master.title("Sample application") 	9
-app.mainloop()                         10
+app.master.title("Sample application") 	
+app.mainloop()                         
 \end{lstlisting}
 \begin{enumerate}
 \item 假如你的系统有Python解释器，路径为/usr/local/bin/python，本行将使脚本自动运行。【译者注：由于不同的linux稍有差异，Python解释器的安装路径可能有差异，建议该行写为\#!/usr/bin/env python】
@@ -231,13 +231,13 @@ w.columnconfigure(1, weight=1)
 以下是小程序内.\_\_createWidgets()方法的替代版本。在这个版本中，退出按钮一直填充可利用空间。
 \begin{lstlisting}[language=python]
 def createWidgets(self):
-	top=self.winfo_toplevel()	1
-	top.rowconfigure(0,weight=1)	2   
-	top.columnconfigure(0,weight=1)	3
-	self.rowconfigure(0,weight=1)	4
-	self.columnconfigure(0,weight=1)	5
+	top=self.winfo_toplevel()	
+	top.rowconfigure(0,weight=1)	   
+	top.columnconfigure(0,weight=1)	
+	self.rowconfigure(0,weight=1)	
+	self.columnconfigure(0,weight=1)	
 	self.quit=Button (self, text=”Quit”, command=self.quit )
-	self.quit.grid( row=0, column=0, sticky=N+S+E+W)	6
+	self.quit.grid( row=0, column=0, sticky=N+S+E+W)	
 \end{lstlisting}
 \begin{enumerate}
 \item 顶层窗口是屏幕上最外层的窗口。然而，这个窗口不是你的程序的窗口——它是程序实例的父类。要获取顶层窗口，在程序中的任何微件上调用.winfo\_toplevel()方法。参看25节，“通用微件方法”（p.91）。
