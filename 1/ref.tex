@@ -66,19 +66,19 @@ rulesepcolor=\color{red!20!green!20!blue!20}%,
 %morekeywords={self,return}
 }
 \begin{lstlisting}[language=python]
-#!/usr/local/bin/python                      1
-from Tkinter import * 			     2
+#!/usr/local/bin/python                      
+from Tkinter import * 			     
 class Application(Frame): 			
-	def __init__(self, master=None):     3
-		Frame.__init__(self, master) 4
-		self.grid() 		     5	
+	def __init__(self, master=None):     
+		Frame.__init__(self, master) 
+		self.grid() 		     	
 		self.createWidgets() 
 	def createWidgets(self): 
-			self.quitButton = Button ( self, text='Quit', command=self.quit ) 6	
-			self.quitButton.grid()  7
-app = Application() 			8			
-app.master.title("Sample application") 	9
-app.mainloop()                         10
+			self.quitButton = Button ( self, text='Quit', command=self.quit ) 	
+			self.quitButton.grid()  
+app = Application() 						
+app.master.title("Sample application") 	
+app.mainloop()                         
 \end{lstlisting}
 \begin{enumerate}
 \item 假如你的系统有Python解释器，路径为/usr/local/bin/python，本行将使脚本自动运行。【译者注：由于不同的linux稍有差异，Python解释器的安装路径可能有差异，建议该行写为\#!/usr/bin/env python】
